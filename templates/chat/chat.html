@@ -16,9 +16,9 @@
                     </ul>
                     <div class="chat-footer p-3">
                         <form id="chat-form"
-                              hx-ext="ws"
-                              hx-connect="/ws/room/public"
-                              hx-send
+                              hx-post="{% url 'home' %}"
+                              hx-target="#chat-body"
+                              hx-swap="beforeend"
                               _="on htmx:afterRequest reset() me"
                         >
                             <div class="input-group">
