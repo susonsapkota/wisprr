@@ -12,7 +12,7 @@ django project
 
 
 ### 2. Create a Virtual Environment
-`python -m venv venv`
+`python3 -m venv venv`
 
 ### 3. Activate Virtual Environment
 `source venv/bin/activate`
