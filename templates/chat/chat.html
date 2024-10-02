@@ -8,21 +8,24 @@
                     <div class="chat-header bg-dark text-white p-2">
                         <h5 class="mb-0">3 online</h5>
                     </div>
-                    <ul class="chat-body p-3" id="chat-body"
+                    <ul class="chat-body p-3"
                         style="height: 70vh; overflow-y: auto; background-color: #f7f7f7;">
-
                         {% for message in chat_messages reversed %}
 
-                                {% include 'chat/partial/msg_p.html' with message=message %}
-    
+                            {% include 'chat/partial/msg_p.html' with message=message %}
+
                         {% endfor %}
                     </ul>
+
+
                     <div class="chat-footer p-3">
                         <form id="chat-form"
                               hx-ext="ws"
                               ws-connect="/ws/room/public"
+                              hx-target="#chat-body"
                               ws-send
                               _="on htmx:wsAfterSend reset() me">
+
                             <div class="input-group">
                                 {% csrf_token %}
                                 {{ form }}

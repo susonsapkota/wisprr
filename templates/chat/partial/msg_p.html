@@ -1,4 +1,4 @@
-<div id="chat-msg-{{ message.id }}" hx-swap-oob="beforeend">
+<div id="chat-body" hx-swap="append">
     <div class="easeUp">
         {% if message.user == user %}
             <li class="message d-flex justify-content-end">

@@ -24,7 +24,6 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data=None, bytes_data=None):
         json_body = json.loads(text_data)
         msg_body = json_body['body']
-
         message = GroupMessage.objects.create(
             room=self.room,
             user=self.user,
@@ -41,13 +40,15 @@ class ChatConsumer(WebsocketConsumer):
         )
 
     def message_handler(self, event):
+        print("message handler")
         message_id = event['message_id']
         message = GroupMessage.objects.get(id=message_id)
         context = {
             'message': message,
-            'user': self.user,
+            'user': message.user,
         }
         html_partial = render_to_string('chat/partial/msg_p.html', context=context)
+        print(html_partial)
         self.send(text_data=html_partial)
 
 
