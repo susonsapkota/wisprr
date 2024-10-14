@@ -4,28 +4,23 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div class="chat-box" id="chat-box">
+                <div class="chat-box" id="chat-box"
+                     hx-ext="ws"
+                     ws-connect="/ws/room/public">
                     <div class="chat-header bg-dark text-white p-2">
-                        <h5 class="mb-0">3 online</h5>
+                        <h5 class="mb-0"><span id="online-users-count"></span> online</h5>
                     </div>
-                    <ul class="chat-body p-3"
-                        style="height: 70vh; overflow-y: auto; background-color: #f7f7f7;">
+                    <ul id="chat-messages" class="chat-body p-3"
+                        style="height: 70vh; overflow-y: auto; background-color: #f7f7f7;"
+                        ws-receive>
                         {% for message in chat_messages reversed %}
-
-                            {% include 'chat/partial/msg_p.html' with message=message %}
-
+                            {% include 'chat/partial/chat_msgs.html' with message=message %}
                         {% endfor %}
                     </ul>
-
-
                     <div class="chat-footer p-3">
                         <form id="chat-form"
-                              hx-ext="ws"
-                              ws-connect="/ws/room/public"
-                              hx-target="#chat-body"
                               ws-send
                               _="on htmx:wsAfterSend reset() me">
-
                             <div class="input-group">
                                 {% csrf_token %}
                                 {{ form }}
@@ -39,19 +34,17 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
 
 {% block javascript %}
     <script>
         function scrollToBottom(time = 0) {
             setTimeout(function () {
-                const container = document.getElementById('chat-body');
+                const container = document.getElementById('chat-messages');
                 container.scrollTop = container.scrollHeight;
             }, time);
         }
 
-        scrollToBottom()
-
+        scrollToBottom();
     </script>
 {% endblock %}
