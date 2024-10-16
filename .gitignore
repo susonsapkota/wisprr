@@ -163,3 +163,7 @@ cython_debug/
 #.idea/
 
 db.sqlite3
+
+*/.DS_Store
+
+*/db.sqlite3

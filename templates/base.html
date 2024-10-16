@@ -55,6 +55,10 @@
         <ul class="navbar-nav ml-auto">
             {% if request.user.is_authenticated %}
                 <li class="nav-item">
+                    <a href="#" class="nav-item">{{ request.user.profile.name }}</a>
+                    <img class="" src="{{ request.user.profile.avatar }}" alt="Avatar" />
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#">Sign Out</a>
                 </li>
             {% else %}
