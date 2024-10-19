@@ -23,6 +23,6 @@ class Profile(models.Model):
     @property
     def avatar(self):
         if self.profile_img:
-            return self.profile_img
+            return self.profile_img.url
         else:
             return f'{settings.STATIC_URL}images/avatar.svg'

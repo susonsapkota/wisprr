@@ -6,9 +6,21 @@
             <div class="col-lg-12">
                 <div class="chat-box" id="chat-box"
                      hx-ext="ws"
-                     ws-connect="/ws/room/public">
+                     ws-connect="/ws/room/{{ chatroom_name }}">
                     <div class="chat-header bg-dark text-white p-2">
-                        <h5 class="mb-0"><span id="online-users-count"></span> online</h5>
+                        {% if other_user %}
+                            <div id="online-icon" class="position-absolute top-0 start-0"></div>
+                            <a href="{% url 'profile' other_user.username %}" class="text-decoration-none">
+                                <div class="d-flex align-items-center gap-2 p-4 sticky-top bg-dark text-white z-10">
+                                    <img class="rounded-circle" src="{{ other_user.profile.avatar }}"
+                                         alt="{{ other_user.profile.name }}'s avatar"
+                                         style="width: 25px; height: 25px; object-fit: cover;"/>
+                                </div>
+                            </a>
+                            <h5 class="mb-0"><span id="online-users-count"></span></h5>
+                        {% else %}
+                            <h5 class="mb-0"><span id="online-users-count"></span> online</h5>
+                        {% endif %}
                     </div>
                     <ul id="chat-messages" class="chat-body p-3"
                         style="height: 70vh; overflow-y: auto; background-color: #f7f7f7;"

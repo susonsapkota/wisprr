@@ -1,4 +1,4 @@
-<span id="online-users-count" hx-swap-oob="outerHTML" class="fade-in-scale">{{ online_count }}
+<span id="online-users-count" hx-swap-oob="outerHTML" class="fade-in-scale">{{ online_count }} Online
 <style>
         @keyframes fadeInScale {
             from {
@@ -16,3 +16,10 @@
         }
     </style> 
 </span>
+
+{% if other_user %}
+    <span id id="online-users-count" class="fw-bold text-success">{{ other_user.profile.name }}</span>
+{% else %}
+    <span id="online-users-count" class="fw-bold text-secondary">@{{ other_user.profile.name }}</span>
+{% endif %}
+

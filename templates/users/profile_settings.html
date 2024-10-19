@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <table class="table table-sm">
+        <tbody>
+        <tr>
+            <th scope="row" class="fw-bold text-dark">
+                Delete Account
+            </th>
+            <td>
+                Once deleted, account is gone. Forever.
+            </td>
+            <td>
+                <a href="{% url 'profile-delete' %}" class="text-danger text-decoration-underline">
+                    Delete
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}
