@@ -9,12 +9,21 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
+from django.contrib import messages
+from environ import Env
+
+env = Env()
+Env.read_env()
+
+ENVIRONMENT = env('ENVIRONMENT', default="development")
+REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')
+
+# ENVIRONMENT = env('ENVIRONMENT', default="production")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -35,7 +44,6 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-
 INSTALLED_APPS = [
     'daphne',
     'django.contrib.admin',
@@ -49,8 +57,10 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'django_htmx',
+    'django_cleanup.apps.CleanupConfig',
 
     'chat',
+    'users'
 
 ]
 
@@ -85,9 +95,24 @@ TEMPLATES = [
     },
 ]
 
-#WSGI_APPLICATION = 'winwisprr.wsgi.application'
+# WSGI_APPLICATION = 'winwisprr.wsgi.application'
 ASGI_APPLICATION = 'winwisprr.asgi.application'
 
+if ENVIRONMENT == 'development':
+    CHANNEL_LAYERS = {
+        'default': {
+            "BACKEND": "channels.layers.InMemoryChannelLayer",
+        }
+    }
+else:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [('redis://localhost:6379')],
+            },
+        },
+    }
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -98,7 +123,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -118,7 +142,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -130,11 +153,14 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -144,3 +170,6 @@ ACCOUNT_USER_MODEL_EMAIL_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
+
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_SIGNUP_REDIRECT_URL = "{% url 'account_signup' %}?next={% url 'profile_onboarding' %}"
