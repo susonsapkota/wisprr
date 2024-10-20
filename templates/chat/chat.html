@@ -8,8 +8,9 @@
                      hx-ext="ws"
                      ws-connect="/ws/room/{{ chatroom_name }}">
                     <div class="chat-header bg-dark text-white p-2">
+                        {#on private chat#}
                         {% if other_user %}
-                            <div id="online-icon" class="position-absolute top-0 start-0"></div>
+                            <p class="text-secondary"> @{{ other_user.username }}</p>
                             <a href="{% url 'profile' other_user.username %}" class="text-decoration-none">
                                 <div class="d-flex align-items-center gap-2 p-4 sticky-top bg-dark text-white z-10">
                                     <img class="rounded-circle" src="{{ other_user.profile.avatar }}"
@@ -17,8 +18,10 @@
                                          style="width: 25px; height: 25px; object-fit: cover;"/>
                                 </div>
                             </a>
-                            <h5 class="mb-0"><span id="online-users-count"></span></h5>
+                            <div id="online-icon" class="text-secondary"></div>
+
                         {% else %}
+                            {#on public chat#}
                             <h5 class="mb-0"><span id="online-users-count"></span> online</h5>
                         {% endif %}
                     </div>

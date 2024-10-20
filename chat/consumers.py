@@ -64,11 +64,9 @@ class ChatConsumer(WebsocketConsumer):
 
     def update_count(self):
         online = self.room.online_users.count() - 1
-        other_user = self.room.online_users.all()
         event = {
             'type': 'online_count_handler',
             'online_count': online,
-            'other_user': other_user
         }
         async_to_sync(self.channel_layer.group_send)(
             self.room_name, event

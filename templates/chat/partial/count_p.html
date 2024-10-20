@@ -1,4 +1,4 @@
-<span id="online-users-count" hx-swap-oob="outerHTML" class="fade-in-scale">{{ online_count }} Online
+<span id="online-users-count" hx-swap="outerHTML" class="fade-in-scale">{{ online_count }}
 <style>
         @keyframes fadeInScale {
             from {
@@ -14,12 +14,12 @@
         .fade-in-scale {
             animation: fadeInScale 0.6s ease;
         }
-    </style> 
+    </style>
 </span>
 
-{% if other_user %}
-    <span id id="online-users-count" class="fw-bold text-success">{{ other_user.profile.name }}</span>
-{% else %}
-    <span id="online-users-count" class="fw-bold text-secondary">@{{ other_user.profile.name }}</span>
-{% endif %}
 
+{% if online_count %}
+    <div class="text-success" id="online-icon">ONLINE</div>
+{% else %}
+    <div class="text-secondary" id="online-icon">OFFLINE</div>
+{% endif %}

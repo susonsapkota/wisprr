@@ -82,3 +82,21 @@ def get_or_create_room(request, username):
         chatroom.members.add(chat_user, request.user)
 
     return redirect('chat_room', chatroom.name)
+
+
+@login_required
+def available_rooms(request):
+    user_rooms = Room.objects.filter(members=request.user)
+    rooms_data = []
+
+    for room in user_rooms:
+        other_users = room.members.exclude(id=request.user.id)
+        rooms_data.append({
+            'room': room,
+            'other_users': other_users  # This will contain users other than the current user
+        })
+
+    context = {
+        'rooms_data': rooms_data,
+    }
+    return render(request, 'chat/available_rooms.html', context)
