@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   django:
     build: .
@@ -15,15 +17,20 @@ services:
       - DATABASE_URL=postgres://postgres:postgres@postgres:5432/dbname
     env_file:
       - .env
+    networks:
+      django_network:
+        ipv4_address: 172.16.238.10
 
   redis:
     image: redis:alpine
-    command: ["redis-server", "--bind", "redis", "--port", "6380"]
+    command: [ "redis-server", "--bind", "redis", "--port", "6380" ]
     container_name: redis
     ports:
       - "6380:6379"
     volumes:
       - ./data/redis:/data
+    networks:
+      django_network:
 
   postgres:
     image: postgres:13
@@ -36,3 +43,12 @@ services:
       - "5432:5432"
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
+    networks:
+      django_network:
+
+networks:
+  django_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.238.0/24

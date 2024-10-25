@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 from django.contrib import messages
 from environ import Env
+import dj_database_url
 
 env = Env()
 Env.read_env()
@@ -32,9 +33,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-gage_m@^pzu)%&3(sf*-n8lob_z4l@qrve!vda+sa*@^c(_m2e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG', default="development")
 
-ALLOWED_HOSTS = ['susonsapkota.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 SITE_ID = 1
 # Application definition
@@ -128,7 +129,7 @@ if ENVIRONMENT == 'development':
     }
 else:
     DATABASES = {
-        'default': env.db('DATABASE_URL')
+        'default': dj_database_url.parse(env('DATABASE_URL'))
     }
 
 # Password validation
