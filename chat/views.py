@@ -73,11 +73,11 @@ def get_or_create_room(request, username):
                 chatroom = chatroom
                 break
             else:
-                print("SUS:1")
+
                 chatroom = Room.objects.create(is_private=True)
                 chatroom.members.add(chat_user, request.user)
     else:
-        print("SUS:2")
+
         chatroom = Room.objects.create(is_private=True)
         chatroom.members.add(chat_user, request.user)
 

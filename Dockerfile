@@ -10,10 +10,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN python manage.py migrate --noinput
-RUN python manage.py collectstatic --noinput
-
-
 EXPOSE 8000
 
-CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "winwisprr.asgi:application"]
+CMD ["sh", "-c", "./wait-for-it.sh postgres:5432 -- daphne -b 0.0.0.0 -p 8000 winwisprr.asgi:application"]
