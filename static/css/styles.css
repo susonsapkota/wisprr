@@ -1,0 +1,17 @@
+.custom-card {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px; /* You can adjust the max width of the card */
+    margin: 0 auto; /* Centers the card horizontally */
+}
+
+.content-wrapper {
+    width: 100%;
+    padding: 20px;
+}
+
+p > label[for="id_email"],
+p > input[type="email"] {
+    display: none;
+}

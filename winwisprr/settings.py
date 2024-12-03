@@ -7,7 +7,7 @@ For more information on this file, see
 https://docs.djangoproject.com/en/4.2/topics/settings/
 
 For the full list of settings and their values, see
-https://docs.djangoproject.com/en/4.2/ref/settings/
+https://docs.djangoproject.com/en/4.s2/ref/settings/
 """
 import os
 from pathlib import Path
@@ -15,16 +15,21 @@ from django.contrib import messages
 from environ import Env
 import dj_database_url
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 env = Env()
-Env.read_env()
+Env.read_env(env_file=str(BASE_DIR / ".env"))
 
-ENVIRONMENT = env('ENVIRONMENT', default="development")
-REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')
 
-# ENVIRONMENT = env('ENVIRONMENT', default="production")
+REDIS_URL = os.getenv('REDIS_URL')
+
+print("SURI:",REDIS_URL)
+
+ENVIRONMENT = os.getenv('ENVIRONMENT')
+print("SURI:",ENVIRONMENT)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -33,9 +38,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-gage_m@^pzu)%&3(sf*-n8lob_z4l@qrve!vda+sa*@^c(_m2e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG', default="development")
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://*.susonsapkota.com']
 
 SITE_ID = 1
 # Application definition
@@ -112,7 +118,7 @@ else:
         "default": {
             "BACKEND": "channels_redis.core.RedisChannelLayer",
             "CONFIG": {
-                "hosts": [('redis://localhost:6379')],
+                "hosts": [(REDIS_URL)],
             },
         },
     }
@@ -182,3 +188,4 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username'
 
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_SIGNUP_REDIRECT_URL = "{% url 'account_signup' %}?next={% url 'profile_onboarding' %}"
+# export chat
