@@ -1,5 +1,5 @@
 # wisprr
-django project
+django chat project
 
 
 ## Prerequisites
